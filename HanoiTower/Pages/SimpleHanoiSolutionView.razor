@@ -1,0 +1,64 @@
+﻿@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+@using HanoiTower.Core
+
+<table>
+    <tbody>
+        @if (Detailed)
+        {
+            <tr>
+                <td>Goal</td>
+                <td>@Solution.Goal.ToString()</td>
+            </tr>
+        }
+
+        @if (Detailed || Solution.Location != HanoiSolutionLocation.BeforeMove)
+        {
+            <tr>
+                <td>Begin state</td>
+                <SKCanvasView OnPaintSurface="ShowBeginState" EnableRenderLoop="true" style="width:300px; height:100px" />
+            </tr>
+        }
+
+        <tr>
+            <td>Move</td>
+            <td>@Solution.Move.ToString()</td>
+        </tr>
+
+        @if (Detailed || Solution.Location != HanoiSolutionLocation.AfterMove)
+        {
+            <tr>
+                <td>End state</td>
+                <SKCanvasView OnPaintSurface="ShowEndState" EnableRenderLoop="true" style="width:300px; height:100px" />
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code
+{
+    [Parameter]
+    public HanoiSolution<ObservableHanoiTower>.Simple Solution { get; set; } = null!;
+
+    [Parameter]
+    public bool Detailed { get; set; }
+
+    private void ShowBeginState(SKPaintSurfaceEventArgs args)
+    {
+        ShowState(args, Solution.BeginState);
+    }
+
+    private void ShowEndState(SKPaintSurfaceEventArgs args)
+    {
+        ShowState(args, Solution.EndState);
+    }
+
+    private void ShowState(SKPaintSurfaceEventArgs args, ObservableHanoiTower tower)
+    {
+        var info = args.Info;
+        var canvas = args.Surface.Canvas;
+        var renderer = new ObservableHanoiTowerRenderer(info, canvas);
+
+        renderer.Render(tower);
+    }
+}

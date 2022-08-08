@@ -1,0 +1,25 @@
+﻿@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+@using HanoiTower.Core
+
+@if (Solution is HanoiSolution<ObservableHanoiTower>.Complex complexSolution)
+{
+    <ComplexHanoiSolutionView Solution=@complexSolution Detailed=@Detailed />
+}
+else if (Solution is HanoiSolution<ObservableHanoiTower>.Simple simpleSolution)
+{
+    <SimpleHanoiSolutionView Solution=@simpleSolution Detailed=@Detailed />
+}
+else
+{
+    <p>Unknown solution type: @Solution.GetType()</p>
+}
+
+@code
+{
+    [Parameter]
+    public HanoiSolution<ObservableHanoiTower> Solution { get; set; } = null!;
+
+    [Parameter]
+    public bool Detailed { get; set; }
+}

@@ -1,0 +1,24 @@
+﻿@page "/hanoisolution"
+@using HanoiTower.Core
+@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+
+<PageTitle>Hanoi Tower</PageTitle>
+
+<h1>Hanoi Tower solution</h1>
+
+This is the Hanoi Tower solution.
+
+<HanoiSolutionView Solution=@_solution Detailed=true />
+
+@code {
+    private readonly HanoiSolution<ObservableHanoiTower> _solution;
+
+    public HanoiSolution()
+    {
+        var numberOfDisks = 8;
+        var tower = new ObservableHanoiTower(numberOfDisks);
+        var solverExplainer = new HanoiSolverExplainer<ObservableHanoiTower>();
+        _solution = solverExplainer.Solve(new HanoiTowerSolutionContext<ObservableHanoiTower>(tower), new HanoiMove(HanoiRod.Rod1, HanoiRod.Rod3)).GetSolution();
+    }
+}
