@@ -12,7 +12,14 @@ else if (Solution is HanoiSolution<ObservableHanoiTower>.Simple simpleSolution)
 }
 else
 {
-    <p>Unknown solution type: @Solution.GetType()</p>
+    @if (Solution is null)
+    {
+        <p>Solution is null.</p>
+    }
+    else
+    {
+        <p>Unknown solution type: @Solution.GetType()</p>
+    }
 }
 
 @code
