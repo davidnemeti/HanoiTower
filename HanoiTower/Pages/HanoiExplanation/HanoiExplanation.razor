@@ -7,7 +7,13 @@
 
 <h1>Hanoi Tower explanation</h1>
 
-<p>This is the Hanoi Tower explanation.</p>
+<EditForm Model="this">
+    <p>
+        This is the Hanoi Tower's
+        <InputSelect @bind-Value="_detailed"> <option value="true">detailed</option> <option value="false">simple</option> </InputSelect>
+        explanation.
+    </p>
+</EditForm>
 
 @if (_solution is null)
 {
@@ -15,11 +21,12 @@
 }
 else
 {
-    <HanoiExplanationView Solution=@_solution Detailed=true />
+    <HanoiExplanationView Solution=@_solution Detailed=@_detailed />
 }
 
 @code {
     private HanoiSolution<ObservableHanoiTower>? _solution;
+    private bool _detailed = true;
 
     protected override async Task OnInitializedAsync()
     {
