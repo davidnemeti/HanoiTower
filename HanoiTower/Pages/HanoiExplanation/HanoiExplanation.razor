@@ -1,22 +1,21 @@
-﻿@page "/hanoisolution"
+﻿@page "/hanoiexplanation"
 @using HanoiTower.Core
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
 
 <PageTitle>Hanoi Tower</PageTitle>
 
-<h1>Hanoi Tower solution</h1>
+<h1>Hanoi Tower explanation</h1>
 
-
-<p>This is the Hanoi Tower solution.</p>
+<p>This is the Hanoi Tower explanation.</p>
 
 @if (_solution is null)
 {
-    <p>Calculating solution...</p>
+    <p>Calculating explanation...</p>
 }
 else
 {
-    <HanoiSolutionView Solution=@_solution Detailed=true />
+    <HanoiExplanationView Solution=@_solution Detailed=true />
 }
 
 @code {

@@ -26,7 +26,7 @@
 
         <tr>
             <td>Solution before move</td>
-            <td><HanoiSolutionView Solution=@Solution.SolutionBeforeMove Detailed=@Detailed /></td>
+            <td><HanoiExplanationView Solution=@Solution.SolutionBeforeMove Detailed=@Detailed /></td>
         </tr>
         <tr>
             <td>Move</td>
@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <td>Solution after move</td>
-            <td><HanoiSolutionView Solution=@Solution.SolutionAfterMove Detailed=@Detailed /></td>
+            <td><HanoiExplanationView Solution=@Solution.SolutionAfterMove Detailed=@Detailed /></td>
         </tr>
 
         @if (Detailed || Solution.Location != HanoiSolutionLocation.AfterMove)

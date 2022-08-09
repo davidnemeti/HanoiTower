@@ -4,11 +4,11 @@
 
 @if (Solution is HanoiSolution<ObservableHanoiTower>.Complex complexSolution)
 {
-    <ComplexHanoiSolutionView Solution=@complexSolution Detailed=@Detailed />
+    <ComplexHanoiExplanationView Solution=@complexSolution Detailed=@Detailed />
 }
 else if (Solution is HanoiSolution<ObservableHanoiTower>.Simple simpleSolution)
 {
-    <SimpleHanoiSolutionView Solution=@simpleSolution Detailed=@Detailed />
+    <SimpleHanoiExplanationView Solution=@simpleSolution Detailed=@Detailed />
 }
 else
 {
