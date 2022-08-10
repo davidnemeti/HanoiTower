@@ -9,6 +9,8 @@
         {
             if (goal.NumberOfDisks < 1)
                 throw new ArgumentOutOfRangeException(nameof(goal), goal, $"Cannot move {goal.NumberOfDisks} number of disks");
+            else if (goal.Move.Target == goal.Move.Source)
+                return tower;
             else if (goal.NumberOfDisks == 1)
                 return tower.MoveDisk(goal.Move);
             else

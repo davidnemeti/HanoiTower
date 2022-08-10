@@ -8,8 +8,8 @@ namespace HanoiTower.Core
         public IImmutableStack<int> DisksOnRod2 { get; }
         public IImmutableStack<int> DisksOnRod3 { get; }
 
-        public ObservableHanoiTower(int numberOfDisks)
-            : this(numberOfDisks, ImmutableStack.CreateRange(Enumerable.Range(1, numberOfDisks).Reverse()), ImmutableStack.Create<int>(), ImmutableStack.Create<int>())
+        public ObservableHanoiTower(int numberOfDisks, HanoiRod initRod)
+            : this(numberOfDisks, GetDisksForRod(numberOfDisks, HanoiRod.Rod1, initRod), GetDisksForRod(numberOfDisks, HanoiRod.Rod2, initRod), GetDisksForRod(numberOfDisks, HanoiRod.Rod3, initRod))
         {
         }
 
@@ -20,6 +20,11 @@ namespace HanoiTower.Core
             DisksOnRod2 = disksOnRod2;
             DisksOnRod3 = disksOnRod3;
         }
+
+        private static IImmutableStack<int> GetDisksForRod(int numberOfDisks, HanoiRod rod, HanoiRod initRod) =>
+            rod == initRod
+                ? ImmutableStack.CreateRange(Enumerable.Range(1, numberOfDisks).Reverse())
+                : ImmutableStack.Create<int>();
 
         public override ObservableHanoiTower MoveDisk(HanoiMove move)
         {
