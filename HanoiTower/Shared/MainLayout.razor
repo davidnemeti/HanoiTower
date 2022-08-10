@@ -1,13 +1,73 @@
-﻿@inherits LayoutComponentBase
+﻿@using HanoiTower.Services
+@using HanoiTower.ViewModel
+@using HanoiTower.Core
+@inherits LayoutComponentBase
+@inject CalculatorService Calculator
+
+@{
+    //void GenerateHanoiRodOptions()
+    //{
+    //    foreach (var rod in Enum.GetValues<HanoiRod>())
+    //    {
+    //        <option value="@rod">@rod</option>
+    //    }
+    //}
+}
 
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
-    <main>
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    <div>
+        <div class="top-row">
+            <EditForm Model="HanoiInitialData" OnValidSubmit="Calculate">
+                <label>Number of disks:</label>
+                <InputNumber @bind-Value="HanoiInitialData.NumberOfDisks" />
+                <label>Source rod:</label>
+                <InputSelect @bind-Value="HanoiInitialData.SourceRod">
+                    @{
+                        foreach (var rod in Enum.GetValues<HanoiRod>())
+                        {
+                            <option value="@rod">@rod</option>
+                        }
+                        //GenerateHanoiRodOptions();    // TODO: it somehow causes runtime error
+                    }
+                </InputSelect>
+                <label>Source rod:</label>
+                <InputSelect @bind-Value="HanoiInitialData.TargetRod">
+                    @{
+                        foreach (var rod in Enum.GetValues<HanoiRod>())
+                        {
+                            <option value="@rod">@rod</option>
+                        }
+                        //GenerateHanoiRodOptions();    // TODO: it somehow causes runtime error
+                    }
+                </InputSelect>
+                <button type="submit">Calculate</button>
+            </EditForm>
+        </div>
+
+        <main>
+            <article class="content px-4">
+                <CascadingValue Value="HanoiInitialData">
+                    @Body
+                </CascadingValue>
+            </article>
+        </main>
+    </div>
 </div>
+
+@code {
+    private HanoiInitialData HanoiInitialData = new HanoiInitialData
+    {
+        NumberOfDisks = 8,
+        SourceRod = HanoiRod.Rod1,
+        TargetRod = HanoiRod.Rod3
+    };
+
+    private void Calculate()
+    {
+        Calculator.OnCalculate(this, HanoiInitialData);
+    }
+}
