@@ -4,8 +4,7 @@
 @using HanoiTower.ViewModel
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
-@inject CalculatorService Calculator
-@implements IDisposable
+@inherits HanoiPageBase<HanoiSolution<ObservableHanoiTower>>
 
 <PageTitle>Hanoi Tower</PageTitle>
 
@@ -15,70 +14,30 @@
     <p>
         This is the Hanoi Tower's
         <InputSelect @bind-Value="_detailed"> <option value="true">detailed</option> <option value="false">simple</option> </InputSelect>
-        explanation for @_numberOfDisks disks.
+        explanation for @NumberOfDisks disks.
     </p>
 </EditForm>
 
-@if (_solution is null)
+@if (Result is null)
 {
     <p>Calculating explanation...</p>
 }
 else
 {
-    <HanoiExplanationView Solution=@_solution Detailed=@_detailed />
+    <HanoiExplanationView Solution=@Result Detailed=@_detailed />
 }
 
 @code {
-    [CascadingParameter]
-    public HanoiInitialData HanoiInitialData { get; set; } = null!;
-
-    private int _numberOfDisks;
-    private HanoiRod _sourceRod;
-    private HanoiRod _targetRod;
-    private HanoiSolution<ObservableHanoiTower>? _solution;
     private bool _detailed = true;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task<HanoiSolution<ObservableHanoiTower>> GetCalculatedResult()
     {
-        await base.OnInitializedAsync();
-
-        await CalculateSolution();
-        Calculator.Calculate += ClearSolution;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (!firstRender && _solution is null)
-        {
-            await CalculateSolution();
-            this.StateHasChanged();
-        }
-    }
-
-    public void Dispose()
-    {
-        Calculator.Calculate -= ClearSolution;
-    }
-
-    protected void ClearSolution(object? sender, HanoiInitialData data)
-    {
-        _solution = null;
-    }
-
-    protected async Task CalculateSolution()
-    {
-        _numberOfDisks = HanoiInitialData.NumberOfDisks;
-        _sourceRod = HanoiInitialData.SourceRod;
-        _targetRod = HanoiInitialData.TargetRod;
-
-        var tower = new ObservableHanoiTower(_numberOfDisks, _sourceRod);
+        var tower = new ObservableHanoiTower(NumberOfDisks, SourceRod);
         var solverExplainer = new HanoiSolverExplainer<ObservableHanoiTower>();
 
-        _solution = await Task.Run(() =>
+        return await Task.Run(() =>
             solverExplainer
-                .Solve(new HanoiTowerSolutionContext<ObservableHanoiTower>(tower), new HanoiMove(_sourceRod, _targetRod))
+                .Solve(new HanoiTowerSolutionContext<ObservableHanoiTower>(tower), new HanoiMove(SourceRod, TargetRod))
                 .GetSolution()
         );
     }
