@@ -2,30 +2,30 @@
 @using SkiaSharp.Views.Blazor
 @using HanoiTower.Core
 
-@if (Solution is HanoiSolution<ObservableHanoiTower>.Complex complexSolution)
+@if (Explanation is HanoiExplanation<ObservableHanoiTower>.Complex complexExplanation)
 {
-    <ComplexHanoiExplanationView Solution=@complexSolution Detailed=@Detailed />
+    <ComplexHanoiExplanationView Explanation=@complexExplanation Detailed=@Detailed />
 }
-else if (Solution is HanoiSolution<ObservableHanoiTower>.Simple simpleSolution)
+else if (Explanation is HanoiExplanation<ObservableHanoiTower>.Simple simpleExplanation)
 {
-    <SimpleHanoiExplanationView Solution=@simpleSolution Detailed=@Detailed />
+    <SimpleHanoiExplanationView Explanation=@simpleExplanation Detailed=@Detailed />
 }
 else
 {
-    @if (Solution is null)
+    @if (Explanation is null)
     {
-        <p>Solution is null.</p>
+        <p>Explanation is null.</p>
     }
     else
     {
-        <p>Unknown solution type: @Solution.GetType()</p>
+        <p>Unknown explanation type: @Explanation.GetType()</p>
     }
 }
 
 @code
 {
     [Parameter]
-    public HanoiSolution<ObservableHanoiTower> Solution { get; set; } = null!;
+    public HanoiExplanation<ObservableHanoiTower> Explanation { get; set; } = null!;
 
     [Parameter]
     public bool Detailed { get; set; }

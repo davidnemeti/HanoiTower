@@ -8,15 +8,15 @@
         {
             <tr>
                 <td>Goal</td>
-                <td>@Solution.Goal.ToString()</td>
+                <td>@Explanation.Goal.ToString()</td>
             </tr>
         }
 
-        @if (Detailed || Solution.Location != HanoiSolutionLocation.BeforeMove)
+        @if (Detailed || Explanation.Location != HanoiExplanationLocation.BeforeMove)
         {
             <tr>
                 <td>Begin step</td>
-                <td>@Solution.BeginStep</td>
+                <td>@Explanation.BeginStep</td>
             </tr>
             <tr>
                 <td>Begin state</td>
@@ -25,19 +25,19 @@
         }
 
         <tr>
-            <td>Solution before move</td>
-            <td><HanoiExplanationView Solution=@Solution.SolutionBeforeMove Detailed=@Detailed /></td>
+            <td>Explanation before move</td>
+            <td><HanoiExplanationView Explanation=@Explanation.ExplanationBeforeMove Detailed=@Detailed /></td>
         </tr>
         <tr>
             <td>Move</td>
-            <td>@Solution.Move.ToString()</td>
+            <td>@Explanation.Move.ToString()</td>
         </tr>
         <tr>
-            <td>Solution after move</td>
-            <td><HanoiExplanationView Solution=@Solution.SolutionAfterMove Detailed=@Detailed /></td>
+            <td>Explanation after move</td>
+            <td><HanoiExplanationView Explanation=@Explanation.ExplanationAfterMove Detailed=@Detailed /></td>
         </tr>
 
-        @if (Detailed || Solution.Location != HanoiSolutionLocation.AfterMove)
+        @if (Detailed || Explanation.Location != HanoiExplanationLocation.AfterMove)
         {
             <tr>
                 <td>End state</td>
@@ -45,7 +45,7 @@
             </tr>
             <tr>
                 <td>End step</td>
-                <td>@Solution.EndStep</td>
+                <td>@Explanation.EndStep</td>
             </tr>
         }
     </tbody>
@@ -54,19 +54,19 @@
 @code
 {
     [Parameter]
-    public HanoiSolution<ObservableHanoiTower>.Complex Solution { get; set; } = null!;
+    public HanoiExplanation<ObservableHanoiTower>.Complex Explanation { get; set; } = null!;
 
     [Parameter]
     public bool Detailed { get; set; }
 
     private void ShowBeginState(SKPaintSurfaceEventArgs args)
     {
-        ShowState(args, Solution.BeginState);
+        ShowState(args, Explanation.BeginState);
     }
 
     private void ShowEndState(SKPaintSurfaceEventArgs args)
     {
-        ShowState(args, Solution.EndState);
+        ShowState(args, Explanation.EndState);
     }
 
     private void ShowState(SKPaintSurfaceEventArgs args, ObservableHanoiTower tower)

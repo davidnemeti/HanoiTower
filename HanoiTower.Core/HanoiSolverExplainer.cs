@@ -2,10 +2,10 @@
 
 namespace HanoiTower.Core
 {
-    public class HanoiSolverExplainer<THanoiTower> : HanoiSolver<HanoiTowerSolutionContext<THanoiTower>>
+    public class HanoiSolverExplainer<THanoiTower> : HanoiSolver<HanoiTowerExplanationContext<THanoiTower>>
         where THanoiTower : IHanoiTower<THanoiTower>
     {
-        protected override HanoiTowerSolutionContext<THanoiTower> Solve(HanoiTowerSolutionContext<THanoiTower> tower, HanoiGoal goal)
+        protected override HanoiTowerExplanationContext<THanoiTower> Solve(HanoiTowerExplanationContext<THanoiTower> tower, HanoiGoal goal)
         {
             var beginState = tower;
             var endState = base.Solve(tower, goal);
@@ -13,50 +13,50 @@ namespace HanoiTower.Core
             var move = goal.Move.WithIndex(tower.Step + 1);
 
             return goal.NumberOfDisks == 1
-                ? endState.WithSimpleSolution(beginState, goal, move)
-                : endState.WithComplexSolution(beginState, goal, move);
+                ? endState.WithSimpleExplanation(beginState, goal, move)
+                : endState.WithComplexExplanation(beginState, goal, move);
         }
     }
 
-    public class HanoiTowerSolutionContext<THanoiTower> : HanoiTowerBase<HanoiTowerSolutionContext<THanoiTower>>
+    public class HanoiTowerExplanationContext<THanoiTower> : HanoiTowerBase<HanoiTowerExplanationContext<THanoiTower>>
         where THanoiTower : IHanoiTower<THanoiTower>
     {
         private readonly THanoiTower _tower;
-        private readonly ImmutableStack<HanoiSolution<THanoiTower>> _solutions;
+        private readonly ImmutableStack<HanoiExplanation<THanoiTower>> _explanations;
         public int Step { get; }
 
-        public HanoiTowerSolutionContext(THanoiTower tower)
-            : this(tower, ImmutableStack.Create<HanoiSolution<THanoiTower>>(), step: 0)
+        public HanoiTowerExplanationContext(THanoiTower tower)
+            : this(tower, ImmutableStack.Create<HanoiExplanation<THanoiTower>>(), step: 0)
         {
         }
 
-        private HanoiTowerSolutionContext(THanoiTower tower, ImmutableStack<HanoiSolution<THanoiTower>> solutions, int step)
+        private HanoiTowerExplanationContext(THanoiTower tower, ImmutableStack<HanoiExplanation<THanoiTower>> explanations, int step)
             : base(tower.NumberOfDisks)
         {
             _tower = tower;
-            _solutions = solutions;
+            _explanations = explanations;
             Step = step;
         }
 
-        public override HanoiTowerSolutionContext<THanoiTower> MoveDisk(HanoiMove move) => new HanoiTowerSolutionContext<THanoiTower>(_tower.MoveDisk(move), _solutions, Step + 1);
+        public override HanoiTowerExplanationContext<THanoiTower> MoveDisk(HanoiMove move) => new HanoiTowerExplanationContext<THanoiTower>(_tower.MoveDisk(move), _explanations, Step + 1);
 
-        public HanoiTowerSolutionContext<THanoiTower> WithSimpleSolution(HanoiTowerSolutionContext<THanoiTower> beginState, HanoiGoal goal, IndexedHanoiMove move)
+        public HanoiTowerExplanationContext<THanoiTower> WithSimpleExplanation(HanoiTowerExplanationContext<THanoiTower> beginState, HanoiGoal goal, IndexedHanoiMove move)
         {
-            var solutions = _solutions.Push(HanoiSolution.Simple(beginState._tower, goal, move, endState: _tower, Step));
-            return new HanoiTowerSolutionContext<THanoiTower>(_tower, solutions, Step);
+            var explanations = _explanations.Push(HanoiExplanation.Simple(beginState._tower, goal, move, endState: _tower, Step));
+            return new HanoiTowerExplanationContext<THanoiTower>(_tower, explanations, Step);
         }
 
-        public HanoiTowerSolutionContext<THanoiTower> WithComplexSolution(HanoiTowerSolutionContext<THanoiTower> beginState, HanoiGoal goal, IndexedHanoiMove move)
+        public HanoiTowerExplanationContext<THanoiTower> WithComplexExplanation(HanoiTowerExplanationContext<THanoiTower> beginState, HanoiGoal goal, IndexedHanoiMove move)
         {
-            var solutions = _solutions
-                .Pop(out var solutionAfterMove)
-                .Pop(out var solutionMove)
-                .Pop(out var solutionBeforeMove)
-                .Push(HanoiSolution.Complex(beginState._tower, solutionBeforeMove, goal, solutionMove.Move, solutionAfterMove, endState: _tower, Step));
+            var explanations = _explanations
+                .Pop(out var explanationAfterMove)
+                .Pop(out var explanationMove)
+                .Pop(out var explanationBeforeMove)
+                .Push(HanoiExplanation.Complex(beginState._tower, explanationBeforeMove, goal, explanationMove.Move, explanationAfterMove, endState: _tower, Step));
 
-            return new HanoiTowerSolutionContext<THanoiTower>(_tower, solutions, Step);
+            return new HanoiTowerExplanationContext<THanoiTower>(_tower, explanations, Step);
         }
 
-        public HanoiSolution<THanoiTower> GetSolution() => _solutions.Single();
+        public HanoiExplanation<THanoiTower> GetExplanation() => _explanations.Single();
     }
 }

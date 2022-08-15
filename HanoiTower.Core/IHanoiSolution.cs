@@ -1,24 +1,24 @@
 ﻿namespace HanoiTower.Core
 {
-    public enum HanoiSolutionLocation
+    public enum HanoiExplanationLocation
     {
         Undetermined,
         BeforeMove,
         AfterMove
     }
 
-    public abstract record HanoiSolution<THanoiTower>
+    public abstract record HanoiExplanation<THanoiTower>
         where THanoiTower : IHanoiTower<THanoiTower>
     {
         public THanoiTower BeginState { get; }
         public HanoiGoal Goal { get; }
         public IndexedHanoiMove Move { get; }
         public THanoiTower EndState { get; }
-        public HanoiSolutionLocation Location { get; init; }
+        public HanoiExplanationLocation Location { get; init; }
 
         protected int Step { get; }
 
-        private HanoiSolution(THanoiTower beginState, HanoiGoal goal, IndexedHanoiMove move, THanoiTower endState, int step)
+        private HanoiExplanation(THanoiTower beginState, HanoiGoal goal, IndexedHanoiMove move, THanoiTower endState, int step)
         {
             BeginState = beginState;
             Goal = goal;
@@ -27,7 +27,7 @@
             Step = step;
         }
 
-        public sealed record Simple : HanoiSolution<THanoiTower>
+        public sealed record Simple : HanoiExplanation<THanoiTower>
         {
             public new int Step => base.Step;
 
@@ -37,35 +37,35 @@
             }
         }
 
-        public sealed record Complex : HanoiSolution<THanoiTower>
+        public sealed record Complex : HanoiExplanation<THanoiTower>
         {
-            public HanoiSolution<THanoiTower> SolutionBeforeMove { get; }
-            public HanoiSolution<THanoiTower> SolutionAfterMove { get; }
+            public HanoiExplanation<THanoiTower> ExplanationBeforeMove { get; }
+            public HanoiExplanation<THanoiTower> ExplanationAfterMove { get; }
             public int BeginStep { get; }
 
             public int EndStep => Step;
 
-            public Complex(THanoiTower beginState, HanoiSolution<THanoiTower> solutionBeforeMove, HanoiGoal goal, IndexedHanoiMove move, HanoiSolution<THanoiTower> solutionAfterMove, THanoiTower endState, int step)
+            public Complex(THanoiTower beginState, HanoiExplanation<THanoiTower> explanationBeforeMove, HanoiGoal goal, IndexedHanoiMove move, HanoiExplanation<THanoiTower> explanationAfterMove, THanoiTower endState, int step)
                 : base(beginState, goal, move, endState, step)
             {
-                SolutionBeforeMove = solutionBeforeMove with { Location = HanoiSolutionLocation.BeforeMove };
-                SolutionAfterMove = solutionAfterMove with { Location = HanoiSolutionLocation.AfterMove };
+                ExplanationBeforeMove = explanationBeforeMove with { Location = HanoiExplanationLocation.BeforeMove };
+                ExplanationAfterMove = explanationAfterMove with { Location = HanoiExplanationLocation.AfterMove };
 
-                BeginStep = solutionBeforeMove is Complex complexSolutionBefore
-                    ? complexSolutionBefore.BeginStep
-                    : solutionBeforeMove.Step;
+                BeginStep = explanationBeforeMove is Complex complexExplanationBefore
+                    ? complexExplanationBefore.BeginStep
+                    : explanationBeforeMove.Step;
             }
         }
     }
 
-    public static class HanoiSolution
+    public static class HanoiExplanation
     {
-        public static HanoiSolution<THanoiTower>.Simple Simple<THanoiTower>(THanoiTower beginState, HanoiGoal goal, IndexedHanoiMove move, THanoiTower endState, int step)
+        public static HanoiExplanation<THanoiTower>.Simple Simple<THanoiTower>(THanoiTower beginState, HanoiGoal goal, IndexedHanoiMove move, THanoiTower endState, int step)
             where THanoiTower : IHanoiTower<THanoiTower> =>
-            new HanoiSolution<THanoiTower>.Simple(beginState, goal, move, endState, step);
+            new HanoiExplanation<THanoiTower>.Simple(beginState, goal, move, endState, step);
 
-        public static HanoiSolution<THanoiTower>.Complex Complex<THanoiTower>(THanoiTower beginState, HanoiSolution<THanoiTower> solutionBeforeMove, HanoiGoal goal, IndexedHanoiMove move, HanoiSolution<THanoiTower> solutionAfterMove, THanoiTower endState, int step)
+        public static HanoiExplanation<THanoiTower>.Complex Complex<THanoiTower>(THanoiTower beginState, HanoiExplanation<THanoiTower> explanationBeforeMove, HanoiGoal goal, IndexedHanoiMove move, HanoiExplanation<THanoiTower> explanationAfterMove, THanoiTower endState, int step)
             where THanoiTower : IHanoiTower<THanoiTower> =>
-            new HanoiSolution<THanoiTower>.Complex(beginState, solutionBeforeMove, goal, move, solutionAfterMove, endState, step);
+            new HanoiExplanation<THanoiTower>.Complex(beginState, explanationBeforeMove, goal, move, explanationAfterMove, endState, step);
     }
 }

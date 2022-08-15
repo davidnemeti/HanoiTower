@@ -4,7 +4,7 @@
 @using HanoiTower.ViewModel
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
-@inherits HanoiPageBase<HanoiSolution<ObservableHanoiTower>>
+@inherits HanoiPageBase<HanoiExplanation<ObservableHanoiTower>>
 
 <PageTitle>Hanoi Tower</PageTitle>
 
@@ -24,21 +24,21 @@
 }
 else
 {
-    <HanoiExplanationView Solution=@Result Detailed=@_detailed />
+    <HanoiExplanationView Explanation=@Result Detailed=@_detailed />
 }
 
 @code {
     private bool _detailed = true;
 
-    protected override async Task<HanoiSolution<ObservableHanoiTower>> GetCalculatedResult()
+    protected override async Task<HanoiExplanation<ObservableHanoiTower>> GetCalculatedResult()
     {
         var tower = new ObservableHanoiTower(NumberOfDisks, SourceRod);
         var solverExplainer = new HanoiSolverExplainer<ObservableHanoiTower>();
 
         return await Task.Run(() =>
             solverExplainer
-                .Solve(new HanoiTowerSolutionContext<ObservableHanoiTower>(tower), new HanoiMove(SourceRod, TargetRod))
-                .GetSolution()
+                .Solve(new HanoiTowerExplanationContext<ObservableHanoiTower>(tower), new HanoiMove(SourceRod, TargetRod))
+                .GetExplanation()
         );
     }
 }
