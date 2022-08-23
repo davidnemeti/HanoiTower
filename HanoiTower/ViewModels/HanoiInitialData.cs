@@ -1,6 +1,6 @@
 ﻿using HanoiTower.Core;
 
-namespace HanoiTower.ViewModel
+namespace HanoiTower.ViewModels
 {
     public class HanoiInitialData
     {

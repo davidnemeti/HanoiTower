@@ -1,6 +1,6 @@
 ﻿using HanoiTower.Core;
 using HanoiTower.Services;
-using HanoiTower.ViewModel;
+using HanoiTower.ViewModels;
 using Microsoft.AspNetCore.Components;
 
 namespace HanoiTower.Pages

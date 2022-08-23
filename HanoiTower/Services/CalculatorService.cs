@@ -1,4 +1,4 @@
-﻿using HanoiTower.ViewModel;
+﻿using HanoiTower.ViewModels;
 
 namespace HanoiTower.Services
 {
