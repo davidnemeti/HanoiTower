@@ -1,0 +1,24 @@
+﻿@using HanoiTower.Core
+@using SkiaSharp.Views.Blazor
+
+<SKCanvasView OnPaintSurface="ShowTower" EnableRenderLoop="@EnableRenderLoop" style="@CssStyle" />
+
+@code {
+    [Parameter]
+    public ObservableHanoiTower Tower { get; set; } = null!;
+
+    [Parameter]
+    public bool EnableRenderLoop { get; set; } = false;
+
+    [Parameter]
+    public string CssStyle { get; set; } = "width:300px; height:100px";
+
+    private void ShowTower(SKPaintSurfaceEventArgs args)
+    {
+        var info = args.Info;
+        var canvas = args.Surface.Canvas;
+        var renderer = new ObservableHanoiTowerRenderer(info, canvas);
+
+        renderer.Render(Tower);
+    }
+}
