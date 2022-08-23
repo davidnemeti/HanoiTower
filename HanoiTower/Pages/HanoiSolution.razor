@@ -1,0 +1,66 @@
+﻿@page "/hanoi-solution"
+@using HanoiTower.Core
+@using HanoiTower.Services
+@using HanoiTower.ViewModels
+@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+@inherits HanoiPageBase<HanoiTowerAggregate<HanoiTowerStateRecorder<ObservableHanoiTower>, HanoiTowerMoveRecorder>>
+
+<PageTitle>Hanoi Tower</PageTitle>
+
+<h1>Hanoi Tower solution</h1>
+
+<p>This is the Hanoi Tower's solution steps for @NumberOfDisks disks.</p>
+
+@if (Result is null)
+{
+    <p>Calculating solution...</p>
+}
+else
+{
+    <table>
+        <tbody>
+            <tr>
+                <td>State</td>
+                <td>#0</td>
+                <td><ObservableHanoiTowerView Tower="Result.Tower1.States.First()" /></td>
+            </tr>
+
+            @{
+                var items = Result.Tower2.Moves
+                    .Select((move, index) => move.WithIndex(index + 1))
+                    .Zip(
+                        Result.Tower1.States.Skip(1),
+                        (move, state) => new { move, state }
+                    );
+
+                foreach (var item in items)
+                {
+                    <tr>
+                        <td>Move</td>
+                        <td>#@item.move.Index</td>
+                        <td>@item.move.Source => @item.move.Target</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>#@item.move.Index</td>
+                        <td><ObservableHanoiTowerView Tower="item.state" /></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+}
+
+@code {
+    protected override async Task<HanoiTowerAggregate<HanoiTowerStateRecorder<ObservableHanoiTower>, HanoiTowerMoveRecorder>> GetCalculatedResult()
+    {
+        var solver = new HanoiSolver<HanoiTowerAggregate<HanoiTowerStateRecorder<ObservableHanoiTower>, HanoiTowerMoveRecorder>>();
+
+        var aggregateTower = new HanoiTowerStateRecorder<ObservableHanoiTower>(new ObservableHanoiTower(NumberOfDisks, SourceRod))
+            .TogetherWith(new HanoiTowerMoveRecorder(NumberOfDisks));
+
+        return await Task.Run(() => solver.Solve(aggregateTower, new HanoiMove(SourceRod, TargetRod)));
+    }
+}
