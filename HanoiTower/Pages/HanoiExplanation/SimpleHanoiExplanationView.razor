@@ -8,7 +8,12 @@
         {
             <tr>
                 <td>Goal</td>
-                <td>@Explanation.Goal.ToString()</td>
+                <td>@Explanation.Goal</td>
+            </tr>
+
+            <tr>
+                <td>Depth</td>
+                <td>@Explanation.Depth</td>
             </tr>
         }
 
@@ -22,7 +27,7 @@
 
         <tr>
             <td>Move</td>
-            <td>@Explanation.Move.ToString()</td>
+            <td>@Explanation.Move</td>
         </tr>
 
         @if (Detailed || Explanation.Location != HanoiExplanationLocation.AfterMove)

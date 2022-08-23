@@ -8,7 +8,12 @@
         {
             <tr>
                 <td>Goal</td>
-                <td>@Explanation.Goal.ToString()</td>
+                <td>@Explanation.Goal</td>
+            </tr>
+
+            <tr>
+                <td>Depth</td>
+                <td>@Explanation.Depth</td>
             </tr>
         }
 
@@ -28,10 +33,12 @@
             <td>Explanation before move</td>
             <td><HanoiExplanationView Explanation=Explanation.ExplanationBeforeMove Detailed=Detailed /></td>
         </tr>
+
         <tr>
             <td>Move</td>
-            <td>@Explanation.Move.ToString()</td>
+            <td>@Explanation.Move</td>
         </tr>
+
         <tr>
             <td>Explanation after move</td>
             <td><HanoiExplanationView Explanation=Explanation.ExplanationAfterMove Detailed=Detailed /></td>
