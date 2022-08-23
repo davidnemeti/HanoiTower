@@ -4,7 +4,7 @@ namespace HanoiTower.Core
 {
     public class HanoiTowerMoveRecorder : HanoiTowerBase<HanoiTowerMoveRecorder>
     {
-        public IImmutableList<HanoiMove> Moves;
+        public IImmutableList<HanoiMove> Moves { get; }
 
         public HanoiTowerMoveRecorder(int numberOfDisks)
             : this(numberOfDisks, ImmutableList.Create<HanoiMove>())

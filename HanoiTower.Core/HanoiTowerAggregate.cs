@@ -49,4 +49,12 @@
             return tower1.NumberOfDisks;
         }
     }
+
+    public static class HanoiTowerAggregateExtensions
+    {
+        public static HanoiTowerAggregate<THanoiTower1, THanoiTower2> TogetherWith<THanoiTower1, THanoiTower2>(this THanoiTower1 tower1, THanoiTower2 tower2)
+            where THanoiTower1 : IHanoiTower<THanoiTower1>
+            where THanoiTower2 : IHanoiTower<THanoiTower2> =>
+            new HanoiTowerAggregate<THanoiTower1, THanoiTower2>(tower1, tower2);
+    }
 }

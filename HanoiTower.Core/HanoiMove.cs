@@ -17,7 +17,7 @@
         public override string ToString() => $"{Source} => {Target}";
     }
 
-    public record IndexedHanoiMove(HanoiRod source, HanoiRod target, int Index) : HanoiMove(source, target)
+    public record IndexedHanoiMove(HanoiRod Source, HanoiRod Target, int Index) : HanoiMove(Source, Target)
     {
         public override string ToString() => $"{base.ToString()} (step {Index})";
     }

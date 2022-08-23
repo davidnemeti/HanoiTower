@@ -6,7 +6,7 @@ namespace HanoiTower.Core
         where THanoiTower : IHanoiTower<THanoiTower>
     {
         private readonly THanoiTower _tower;
-        public IImmutableList<THanoiTower> States;
+        public IImmutableList<THanoiTower> States { get; }
 
         public HanoiTowerStateRecorder(THanoiTower tower)
             : this(tower, ImmutableList.Create<THanoiTower>(tower))
