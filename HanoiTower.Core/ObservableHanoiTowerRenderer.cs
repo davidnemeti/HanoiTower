@@ -82,12 +82,11 @@ namespace HanoiTower.Core
             _canvas.DrawRoundRect(x, y, diskWidth, diskHeight, rx, ry, diskStrokePaint);
         }
 
-        private SKColor GetDiskColor(int disk) => BasicColors[disk % BasicColors.Length];
+        private SKColor GetDiskColor(int disk) => BasicColors[(disk - 1) % BasicColors.Length];
 
         private static readonly SKColor[] BasicColors = new []
         {
             SKColors.Red,
-            SKColors.Navy,
             SKColors.Lime,
             SKColors.Silver,
             SKColors.Blue,
@@ -100,6 +99,7 @@ namespace HanoiTower.Core
             SKColors.Gray,
             SKColors.Maroon,
             SKColors.Teal,
+            SKColors.Navy,
         };
     }
 }
